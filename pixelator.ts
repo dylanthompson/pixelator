@@ -51,6 +51,7 @@ export class PixelatorFrame {
     public getImageData(): ImageData {
         return this.imageData;
     }
+    
 
     public getPixel(x: number, y: number): Pixel {
         var red: number = y * (this.width * 4) + x * 4;
@@ -74,15 +75,14 @@ export class PixelatorFrame {
         }
     }
 
-    drawSky(time:number, background: IPixelatorBackground) { // height: number, colors: Pixel[], gradation: IGradation) {
-        let colors = Array.from(background.colors, (v,k) => { return Pixel.fromHex(v);  });
-        if (background.height > this.height) {
+    drawSky(height: number, colors: Pixel[], gradation: IGradation) {
+        if (height > this.height) {
             throw new Error("height must be less than max height");
         }
         let y = 0;
         let numberOfGradientSegments = (colors.length * 2) - 2;
-        let totalHeightForGradientSections = background.gradation.style.getHeightofGradationSection(background.gradation, numberOfGradientSegments)
-        let heightForColorBars = Math.floor((background.height - totalHeightForGradientSections) / colors.length);
+        let totalHeightForGradientSections = gradation.style.getHeightofGradationSection(gradation, numberOfGradientSegments)
+        let heightForColorBars = Math.floor((height - totalHeightForGradientSections) / colors.length);
         for (var i = 0; i < colors.length; i++) {
             let color = colors[i];
             let barMax = y + heightForColorBars;
@@ -90,7 +90,7 @@ export class PixelatorFrame {
                 this.fillRow(y, color);
             }
             if (i < colors.length - 1) {
-                y = background.gradation.style.drawGradation(y, color, colors[i + 1], background.gradation, this);
+                y = gradation.style.drawGradation(y, color, colors[i + 1], gradation, this);
             }
         }
     }
@@ -104,18 +104,20 @@ export class Pixelator {
     }
 
     public createGif(config: IPixelatorConfig) {
-        let frames: PixelatorFrame[] = [];
-        for (let t = 0; t < config.frames; t++) {
-            let p = new PixelatorFrame(config.width, config.height);
-            if (config.background && config.background['sky']) {
-                p.drawSky(t, config.background['sky']);
+
+        let p = new PixelatorFrame(config.width, config.height);
+
+        if (config.background && config.background['sky']) {
+            let pixels = Array.from(config.background['sky'].colors, (v,k) => { return Pixel.fromHex(v);  });
+            if (typeof pixels !== null) {
+                p.drawSky(config.background['sky'].height, pixels, config.background['sky'].gradation);
             }
-            frames.push(p);
         }
-        this.print(config, frames);
+
+        this.print(config, p.getImageData());
     }
 
-    print(config: IPixelatorConfig, frames: PixelatorFrame[]) {
+    print(config: IPixelatorConfig, imageData: ImageData) {
         var gif = new GifEncoder(config.width, config.height);
         var file = fs.createWriteStream(config.name + '.gif');
 
@@ -123,10 +125,7 @@ export class Pixelator {
         
         // Write out the image into memory  
         gif.writeHeader();
-
-        for (let frame of frames) {
-            gif.addFrame(frame.getImageData());
-        }
+        gif.addFrame(imageData.data);
         // gif.addFrame(pixels); // Write subsequent rgba arrays for more frames
         gif.finish();
     }
@@ -153,7 +152,6 @@ interface IPixelatorConfig {
     height: number;
     width: number;
     frames: number;
-   
     background: { [key: string]: IPixelatorBackground };
 }
 
@@ -295,7 +293,7 @@ let config: IPixelatorConfig = {
     name: 'purple-lines',
     height: 256,
     width: 256,
-    frames: 1,
+    frames: 16,
     background: {
         'sky' : {
             name: 'purple-sky',
@@ -386,7 +384,7 @@ let config3A: IPixelatorConfig = {
     name: 'rainbow-dots',
     height: 1048,
     width: 1048,
-    frames: 16,
+    frames: 1,
     background: {
         'sky' : {
             name: 'rainbow-sky',
@@ -403,10 +401,9 @@ let config3A: IPixelatorConfig = {
 var p = new Pixelator();
 
 p.createGif(config);
+// p.createGif(config2);
+// p.createGif(config3);
 
-p.createGif(config2);
-p.createGif(config3);
-
-p.createGif(configA);
-p.createGif(config2A);
-p.createGif(config3A);
+// p.createGif(configA);
+// p.createGif(config2A);
+// p.createGif(config3A);

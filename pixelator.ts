@@ -75,14 +75,15 @@ export class PixelatorFrame {
         }
     }
 
-    drawSky(height: number, colors: Pixel[], gradation: IGradation) {
-        if (height > this.height) {
+    drawSky(sky: IPixelatorBackground) {
+        let colors = Array.from(sky.colors, (v,k) => { return Pixel.fromHex(v);  });
+        if (sky.height > this.height) {
             throw new Error("height must be less than max height");
         }
         let y = 0;
-        let numberOfGradientSegments = (colors.length * 2) - 2;
-        let totalHeightForGradientSections = gradation.style.getHeightofGradationSection(gradation, numberOfGradientSegments)
-        let heightForColorBars = Math.floor((height - totalHeightForGradientSections) / colors.length);
+        let numberOfGradientSegments = (sky.colors.length * 2) - 2;
+        let totalHeightForGradientSections = sky.gradation.style.getHeightofGradationSection(sky.gradation, numberOfGradientSegments)
+        let heightForColorBars = Math.floor((sky.height - totalHeightForGradientSections) / colors.length);
         for (var i = 0; i < colors.length; i++) {
             let color = colors[i];
             let barMax = y + heightForColorBars;
@@ -90,7 +91,7 @@ export class PixelatorFrame {
                 this.fillRow(y, color);
             }
             if (i < colors.length - 1) {
-                y = gradation.style.drawGradation(y, color, colors[i + 1], gradation, this);
+                y = sky.gradation.style.drawGradation(y, color, colors[i + 1], sky.gradation, this);
             }
         }
     }
@@ -98,26 +99,23 @@ export class PixelatorFrame {
 
 export class Pixelator {
 
-
-    constructor() {
-
-    }
+    constructor() { }
 
     public createGif(config: IPixelatorConfig) {
+        let frames:ImageData[] = [];
+        for (let t = 0; t < config.frames; t++) {
+            let p = new PixelatorFrame(config.width, config.height);
 
-        let p = new PixelatorFrame(config.width, config.height);
-
-        if (config.background && config.background['sky']) {
-            let pixels = Array.from(config.background['sky'].colors, (v,k) => { return Pixel.fromHex(v);  });
-            if (typeof pixels !== null) {
-                p.drawSky(config.background['sky'].height, pixels, config.background['sky'].gradation);
+            if (config.background && config.background['sky']) {
+                p.drawSky(config.background['sky']);
             }
+            frames.push(p.getImageData());
         }
 
-        this.print(config, p.getImageData());
+        this.print(config, frames);
     }
 
-    print(config: IPixelatorConfig, imageData: ImageData) {
+    print(config: IPixelatorConfig, frames: ImageData[]) {
         var gif = new GifEncoder(config.width, config.height);
         var file = fs.createWriteStream(config.name + '.gif');
 
@@ -125,7 +123,9 @@ export class Pixelator {
         
         // Write out the image into memory  
         gif.writeHeader();
-        gif.addFrame(imageData.data);
+        for (let frame of frames) {
+            gif.addFrame(frame.data);
+        }
         // gif.addFrame(pixels); // Write subsequent rgba arrays for more frames
         gif.finish();
     }
@@ -143,6 +143,7 @@ function getNumberOfLines(num:number): number
 interface IPixelatorBackground {
     name: string;
     height: number;
+    speed: number;
     colors: string[];
     gradation: IGradation;
 }
@@ -298,6 +299,7 @@ let config: IPixelatorConfig = {
         'sky' : {
             name: 'purple-sky',
             height: 168,
+            speed: 1,
             colors: themes['material-purple'],
             gradation:  {
                 style: gradationStyles.lines,
@@ -311,11 +313,12 @@ let configA: IPixelatorConfig = {
     name: 'purple-dots',
     height: 256,
     width: 256,
-    frames: 1,
+    frames: 16,
     background: {
         'sky' : {
             name: 'purple-sky',
             height: 168,
+            speed: 1,
             colors: themes['material-purple'],
             gradation:  {
                 style: gradationStyles['3dField'],
@@ -334,6 +337,7 @@ let config2: IPixelatorConfig = {
         'sky' : {
             name: 'yellow-sky',
             height: 1048,
+            speed: 1,
             colors: themes['material-yellow'],
             gradation:  {
                 style: gradationStyles.lines,
@@ -352,6 +356,7 @@ let config2A: IPixelatorConfig = {
         'sky' : {
             name: 'yellow-sky',
             height: 1048,
+            speed: 1,
             colors: themes['material-yellow'],
             gradation:  {
                 style: gradationStyles['3dField'],
@@ -371,6 +376,7 @@ let config3: IPixelatorConfig = {
         'sky' : {
             name: 'rainbow-sky',
             height: 1048,
+            speed: 1,
             colors: themes['material-rainbow'],
             gradation:  {
                 style: gradationStyles["lines"],
@@ -389,6 +395,7 @@ let config3A: IPixelatorConfig = {
         'sky' : {
             name: 'rainbow-sky',
             height: 1048,
+            speed: 1,
             colors: themes['material-rainbow'],
             gradation:  {
                 style: gradationStyles["3dField"],

@@ -1,0 +1,6 @@
+node_modules/*
+output/*
+/*.gif
+/*.js.map
+/*.js
+package-lock.json

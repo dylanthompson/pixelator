@@ -91,7 +91,13 @@ export class PixelatorFrame {
                 this.fillRow(y, color);
             }
             if (i < colors.length - 1) {
-                y = sky.gradation.style.drawGradation(t, y, sky.speed, color, colors[i + 1], sky.gradation, this);
+                let colorsToUse;
+                if (sky.gradation.numColors == 4) {
+                    colorsToUse = colors
+                } else {
+                    colorsToUse = [colors[i], colors[i + 1]]
+                }
+                y = sky.gradation.style.drawGradation(t, y, sky.speed, colors, sky.gradation, this);
             }
         }
     }
@@ -162,11 +168,12 @@ interface IPixelatorConfig {
 
 interface IGradationStyle {
     getHeightofGradationSection(gradation: IGradation, numberOfGradientSegments: number): number;
-    drawGradation(time: number, yIndex: number, skySpeed: number, color: Pixel, nextColor: Pixel, gradation: IGradation, pixelatorFrame: PixelatorFrame): number;
+    drawGradation(time: number, yIndex: number, skySpeed: number, colors: Pixel[], gradation: IGradation, pixelatorFrame: PixelatorFrame): number;
 }
 
 interface IGradation {
     magnitude: number;
+    numColors: number;
     style: IGradationStyle;
 }
 
@@ -175,8 +182,8 @@ let gradationStyles = {
         getHeightofGradationSection: (gradation: IGradation, numOfGradationSegments: number): number => {
             return getNumberOfLines(gradation.magnitude + 1) * 2;
         },
-        drawGradation: (time: number, yIndex: number, skySpeed: number, color: Pixel, nextColor: Pixel, gradation: IGradation, pixelatorFrame: PixelatorFrame): number => {
-
+        drawGradation: (time: number, yIndex: number, skySpeed: number, colors: Pixel[], gradation: IGradation, pixelatorFrame: PixelatorFrame): number => {
+            
             let flipColor = (curColor: Pixel) => {
                 if (curColor == nextColor) {
                     return color;
@@ -184,6 +191,9 @@ let gradationStyles = {
                     return nextColor;
                 }
             }
+
+            let color = colors[0];
+            let nextColor = colors[1];
             // If bottom, only draw color bar
             // if top or in the middle, color bar then bottom gradient
             var nextColorToPrint = nextColor;
@@ -210,7 +220,7 @@ let gradationStyles = {
         getHeightofGradationSection: (gradation: IGradation, numOfGradationSegments: number) => {
             return numOfGradationSegments * gradation.magnitude;
         },
-        drawGradation: (time: number, yIndex: number, skySpeed: number, color: Pixel, nextColor: Pixel, gradation: IGradation, pixelatorFrame: PixelatorFrame): number => {
+        drawGradation: (time: number, yIndex: number, skySpeed: number, colors: Pixel[], gradation: IGradation, pixelatorFrame: PixelatorFrame): number => {
 
             let fillGradientRow = (time: number, yIndex: number, skySpeed: number, gradation: IGradation, pixelatorFrame: PixelatorFrame, primaryColor: Pixel, secondaryColor: Pixel, frequency: number) => {
 
@@ -232,15 +242,23 @@ let gradationStyles = {
                     pixelatorFrame.setPixel(x, yIndex, colorToUse);
                 }
             }
+            let c1, c2, c3, c4;
+            if (colors.length < 4) {
+                [c1, c2] = colors;
+                [c4, c3] = colors;
+            } else {
+                [c1, c2, c3, c4] = colors;
+            }
+
             // If bottom, only draw color bar
             // if top or in the middle, color bar then bottom gradient
             for (var g = gradation.magnitude; g > 0; g--) {
-                fillGradientRow(time, yIndex, skySpeed, gradation, pixelatorFrame, color, nextColor, g);
+                fillGradientRow(time, yIndex, skySpeed, gradation, pixelatorFrame, c1, c2, g);
                 yIndex++;
             }
 
             for (var g2 = 1; g2 < gradation.magnitude; g2++) {
-                fillGradientRow(time, yIndex, skySpeed, gradation, pixelatorFrame, nextColor, color, g2);
+                fillGradientRow(time, yIndex, skySpeed, gradation, pixelatorFrame, c3, c4, g2);
                 yIndex++;
             }
 
@@ -310,43 +328,57 @@ var themes = {
         '#ffe0b2',
         '#ffccbc',
         '#d7ccc8'
+    ],
+    'material-purple-blue-yellow-orange': [
+        '#512da8',
+        '#1e88e5',
+        '#f9a825',
+        '#ffee58'
+    ],
+    'toxic': [
+        '#c56000',
+        '#827717',
+        '#6d4c41',
+        '#ffff8b'
     ]
 };
 
 
 let config: IPixelatorConfig = {
-    name: 'black-and-white-still',
-    height: 128,
-    width: 128,
-    frames: 1,
+    name: 'purple-blue-yellow-orange',
+    height: 512,
+    width: 512,
+    frames: 32,
     background: {
         'sky' : {
-            name: 'black-and-white',
-            height: 32,
+            name: 'material-blues-purples',
+            height: 512,
             speed: 1,
-            colors: themes['black-and-white'],
+            colors: themes['material-purple-blue-yellow-orange'],
             gradation:  {
+                numColors: 4,
                 style: gradationStyles['3dField'],
-                magnitude: 64
+                magnitude: 256
             }
         }
     }
 }
 
 let configA: IPixelatorConfig = {
-    name: 'black-and-white-animated',
-    height: 128,
-    width: 128,
+    name: 'material-purple-blue-yellow-red',
+    height: 512,
+    width: 512,
     frames: 256,
     background: {
         'sky' : {
-            name: 'black-and-white',
-            height: 128,
+            name: 'material-blues-purples',
+            height: 512,
             speed: 1,
-            colors: themes['black-and-white'],
+            colors: themes['toxic'],
             gradation:  {
+                numColors: 4,
                 style: gradationStyles['3dField'],
-                magnitude: 62
+                magnitude: 256
             }
         }
     }
@@ -365,6 +397,7 @@ let configP: IPixelatorConfig = {
             speed: 1,
             colors: themes['material-purple'],
             gradation:  {
+                numColors: 0,
                 style: gradationStyles['3dField'],
                 magnitude: 5
             }
@@ -384,6 +417,7 @@ let configP1: IPixelatorConfig = {
             speed: 1,
             colors: themes['material-purple'],
             gradation:  {
+                numColors: 0,
                 style: gradationStyles['3dField'],
                 magnitude: 12
             }
@@ -403,6 +437,7 @@ let config2: IPixelatorConfig = {
             speed: 1,
             colors: themes['material-yellow'],
             gradation:  {
+                numColors: 0,
                 style: gradationStyles['3dField'],
                 magnitude: 12
             }
@@ -422,6 +457,7 @@ let config2A: IPixelatorConfig = {
             speed: 1,
             colors: themes['two-yellow'],
             gradation:  {
+                numColors: 0,
                 style: gradationStyles['3dField'],
                 magnitude: 256
             }
@@ -441,6 +477,7 @@ let config3: IPixelatorConfig = {
             speed: 1,
             colors: themes['material-rainbow'],
             gradation:  {
+                numColors: 0,
                 style: gradationStyles["lines"],
                 magnitude: 6
             }
@@ -460,6 +497,7 @@ let config3A: IPixelatorConfig = {
             speed: 10,
             colors: themes['two-teal'],
             gradation:  {
+                numColors: 0,
                 style: gradationStyles["3dField"],
                 magnitude: 128
             }
@@ -475,9 +513,9 @@ var p = new Pixelator();
 //p.createGif(config2);
 // p.createGif(config3);
 
-//p.createGif(configA);
+p.createGif(configA);
 //p.createGif(config2A);
-p.createGif(config3A);
+//p.createGif(config3A);
 
 //p.createGif(configP);
 //p.createGif(configP1);

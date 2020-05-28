@@ -1,5 +1,5 @@
 import * as Canvas from 'canvas';
-import { PixelatorColor } from './PixelatorColor';
+import { PixelatorColor } from './pixelatorColor';
 import { IPixelatorBackground } from './pixelator';
 
 export class PixelatorFrame {

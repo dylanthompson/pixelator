@@ -1,5 +1,5 @@
 import { Gradation } from "./gradation";
-import { PixelatorColor } from "../PixelatorColor";
+import { PixelatorColor } from "../pixelatorColor";
 import { PixelatorFrame } from "../pixelatorFrame";
 
 export class LineGradation extends Gradation {

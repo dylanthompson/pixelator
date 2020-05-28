@@ -1,7 +1,8 @@
-node_modules/*
-output/*
-js/*
-/*.gif
-/*.js.map
-/*.js
-package-lock.json
+**/node_modules/*
+**/output/*
+**/js/*
+**/dist/*
+**/*.gif
+**/*.js.map
+**/*.js
+**/package-lock.json

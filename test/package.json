@@ -1,0 +1,14 @@
+{
+  "name": "pixelator-test-app",
+  "version": "0.0.1",
+  "description": "Test app for the pixelator package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dylan thompson",
+  "license": "ISC",
+  "dependencies": {
+    "pixelator": "pixelator-0.0.1.tgz"
+  }
+}

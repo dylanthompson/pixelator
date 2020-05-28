@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "cd ./dist && npm pack && cd ..",
-    "build": "tsc",
+    "build": "tsc -d",
     "copy-package-file": "xcopy /I /Q /Y /F package.json dist\\",
     "package": "npm run clean-build && npm run build && npm run copy-package-file && npm run pack",
     "clean-build": "if exist dist rmdir /Q /S dist",

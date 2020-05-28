@@ -2,7 +2,8 @@
 var GifEncoder = require('gif-encoder');
 import * as fs from 'fs';
 import { PixelatorFrame } from './pixelatorFrame';
-import { GradationFactory, GradationType, Gradation } from './gradations/gradation';
+import { Gradation } from './gradations/gradation';
+import { GradationFactory } from './gradations/gradationFactory';
 import { IPixelatorConfig, IPixelatorBackgroundConfiguration } from './configuration';
 
 export interface IPixelatorBackground {

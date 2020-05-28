@@ -4,7 +4,17 @@
   "description": "pixel art gif utility",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "cd ./dist && npm pack && cd ..",
+    "build": "tsc",
+    "copy-package-file": "xcopy /I /Q /Y /F package.json dist\\",
+    "package": "npm run clean-build && npm run build && npm run copy-package-file && npm run pack",
+    "clean-build": "if exist dist rmdir /Q /S dist",
+    "install-npm": "npm run clean-install && npm install",
+    "clean-install": "npm run clean-node_modules && npm run clean-package-lock",
+    "clean-package-lock": "if exist package-lock.json del /F /Q package-lock.json",
+    "clean-node_modules": "if exist node_modules rmdir /Q /S node_modules",
+    "install-and-package": "npm run install-npm && npm run package"
   },
   "keywords": [
     "gif",

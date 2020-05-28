@@ -1,0 +1,72 @@
+{
+    "two-teal": [
+        "#eefff0",
+        "#00695c"
+    ],
+
+    "two-yellow": [
+        "#4a148c",
+        "#f9a825"
+    ],
+
+    "black-and-white": [
+        "#ffffff",
+        "#000000"
+    ],
+
+    "material-purple":  [
+        "#4a148c",
+        "#6a1b9a",
+        "#7b1fa2",
+        "#8e24aa",
+        "#9c27b0",
+        "#ab47bc",
+        "#ba68c8",
+        "#ce93d8",
+        "#e1bee7",
+        "#f3e5f5"
+    ],
+    "material-yellow": [
+        "#f57f17",
+        "#f9a825",
+        "#fbc02d",
+        "#fdd835",
+        "#ffeb3b",
+        "#ffee58",
+        "#fff176",
+        "#fff59d",
+        "#fff9c4",
+        "#fffde7"
+    ],
+    "material-rainbow": [
+        "#ffcdd2",
+        "#f8bbd0",
+        "#e1bee7",
+        "#d1c4e9",
+        "#c5cae9",
+        "#bbdefb",
+        "#b3e5fc",
+        "#b2ebf2",
+        "#b2dfdb",
+        "#c8e6c9",
+        "#dcedc8",
+        "#f0f4c3",
+        "#fff9c4",
+        "#ffecb3",
+        "#ffe0b2",
+        "#ffccbc",
+        "#d7ccc8"
+    ],
+    "material-purple-blue-yellow-orange": [
+        "#512da8",
+        "#1e88e5",
+        "#f9a825",
+        "#ffee58"
+    ],
+    "toxic": [
+        "#c56000",
+        "#827717",
+        "#6d4c41",
+        "#ffff8b"
+    ]
+}

@@ -1,0 +1,159 @@
+{
+    "gifs": {
+        "purple-blue-yellow-orange": {
+            "name": "purple-blue-yellow-orange",
+            "height": 512,
+            "width": 512,
+            "frames": 32,
+            "background": {
+                "sky": {
+                    "name": "material-blues-purples",
+                    "height": 512,
+                    "speed": 1,
+                    "theme": "material-purple-blue-yellow-orange",
+                    "gradation": {
+                        "numColors": 4,
+                        "type": "line",
+                        "magnitude": 256
+                    }
+                }
+            }
+        },
+        "material-purple-blue-yellow-red": {
+            "name": "material-purple-blue-yellow-red",
+            "height": 512,
+            "width": 512,
+            "frames": 256,
+            "background": {
+                "sky": {
+                    "name": "material-blues-purples",
+                    "height": 512,
+                    "speed": 1,
+                    "theme": "toxic",
+                    "gradation": {
+                        "numColors": 4,
+                        "type": "field",
+                        "magnitude": 256
+                    }
+                }
+            }
+        },
+        "purple-sky-recreate": {
+            "name": "purple-sky-recreate",
+            "height": 256,
+            "width": 256,
+            "frames": 1,
+            "background": {
+                "sky": {
+                    "name": "purple sky",
+                    "height": 168,
+                    "speed": 1,
+                    "theme": "material-purple",
+                    "gradation": {
+                        "numColors": 0,
+                        "type": "field",
+                        "magnitude": 5
+                    }
+                }
+            }
+        },
+        "purple-animated": {
+            "name": "purple-animated",
+            "height": 512,
+            "width": 512,
+            "frames": 64,
+            "background": {
+                "sky": {
+                    "name": "bpurple",
+                    "height": 512,
+                    "speed": 1,
+                    "theme": "material-purple",
+                    "gradation": {
+                        "numColors": 0,
+                        "type": "field",
+                        "magnitude": 12
+                    }
+                }
+            }
+        },
+        "yellow-lines": {
+            "name": "yellow-lines",
+            "height": 2096,
+            "width": 512,
+            "frames": 120,
+            "background": {
+                "sky": {
+                    "name": "yellow-sky-fast",
+                    "height": 2096,
+                    "speed": 1,
+                    "theme": "material-yellow",
+                    "gradation": {
+                        "numColors": 0,
+                        "type": "field",
+                        "magnitude": 12
+                    }
+                }
+            }
+        },
+        "yellow-dots": {
+            "name": "yellow-dots",
+            "height": 512,
+            "width": 512,
+            "frames": 128,
+            "background": {
+                "sky": {
+                    "name": "yellow-field",
+                    "height": 512,
+                    "speed": 1,
+                    "theme": "two-yellow",
+                    "gradation": {
+                        "numColors": 0,
+                        "type": "field",
+                        "magnitude": 256
+                    }
+                }
+            }
+        },
+        "rainbow-lines": {
+            "name": "rainbow-lines",
+            "height": 1048,
+            "width": 1048,
+            "frames": 1,
+            "background": {
+                "sky": {
+                    "name": "rainbow-sky",
+                    "height": 1048,
+                    "speed": 1,
+                    "theme": "material-rainbow",
+                    "gradation": {
+                        "numColors": 0,
+                        "type": "line",
+                        "magnitude": 6
+                    }
+                }
+            }
+        },
+        "teal-white-field": {
+            "name": "teal-white-field",
+            "height": 256,
+            "width": 512,
+            "frames": 1000,
+            "background": {
+                "sky": {
+                    "name": "teal-white",
+                    "height": 256,
+                    "speed": 10,
+                    "theme": "two-teal",
+                    "gradation": {
+                        "numColors": 0,
+                        "type": "field",
+                        "magnitude": 128
+                    }
+                }
+            }
+        }
+    },
+    "queue": [
+        "yellow-dots"
+    ]
+}

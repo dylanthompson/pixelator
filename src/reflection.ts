@@ -84,11 +84,12 @@ export class Reflection implements IPixelatorEffect {
         let reflectY = this.top;
         let reflectX;
         this.setAnimationFrame(t);
-        let rippleDepthDirection = this.animationDirection * -1;
+        let rippleDepthDirection = 1;
+        let rippleDepthCounter = 0;
         
         // Draw the reflection by copying pixels over across the X axis at top
         for (let drawCoordY = this.top + 1; drawCoordY > 0; drawCoordY++) {
-            if (drawCoordY % this.rippleDepth == 0) {
+            if (rippleDepthCounter % this.rippleDepth == 0) {
                 rippleDepthDirection *= -1;
             }
             for (let drawCoordX = reflectX = 0; drawCoordX < frame.width; drawCoordX++) {
@@ -98,6 +99,7 @@ export class Reflection implements IPixelatorEffect {
                 reflectX++;
             }
             reflectY--;
+            rippleDepthCounter++;
             if (reflectY < 0) {
                 return;
             }

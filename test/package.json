@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "if exist pixelator-0.0.1.tgz del /F /Q pixelator-0.0.1.tgz",
     "copy": "xcopy /I /Q /Y /F ..\\dist\\pixelator-0.0.1.tgz ..\\test\\",
-    "build": "npm run clean && npm run copy && npm install && tsc -d"
+    "clean-install-and-build": "npm run clean && npm run copy && npm install && tsc -d"
   },
   "author": "dylan thompson",
   "license": "ISC",

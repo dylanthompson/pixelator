@@ -1,5 +1,6 @@
 import { GradationType } from "./gradations/gradation";
 import { IReflectionConfiguration } from './reflection';
+import { ISunConfiguration } from "./pixelatorFrame";
 export interface IPixelatorConfig {
     name: string;
     height: number;
@@ -18,6 +19,7 @@ export interface IPixelatorBackgroundConfiguration {
     speed: number;
     theme: string;
     gradation: IGradationConfiguration;
+    sun: ISunConfiguration | null;
 }
 
 export interface IGradationConfiguration {

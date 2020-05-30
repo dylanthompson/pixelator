@@ -6,6 +6,7 @@ import { Gradation } from './gradations/gradation';
 import { GradationFactory } from './gradations/gradationFactory';
 import { IPixelatorConfig, IPixelatorBackgroundConfiguration } from './configuration';
 import { Reflection, IReflectionConfiguration } from './reflection'
+import { PixelatorColor } from './pixelatorColor';
 
 export interface IPixelatorBackground {
     name: string;
@@ -17,7 +18,7 @@ export interface IPixelatorBackground {
 
 
 export interface IPixelatorEffect {
-    applyEffect(frame: PixelatorFrame): void;
+    applyEffect(time: number, frame: PixelatorFrame): void;
 }
 
 export class PixelatorEffectFactory {
@@ -28,7 +29,10 @@ export class PixelatorEffectFactory {
                 let pixelatorEffectConfig = config as IReflectionConfiguration;
                 return new Reflection(pixelatorEffectConfig.top,
                     pixelatorEffectConfig.rippleDepth,
-                    pixelatorEffectConfig.rippleMagnitude);
+                    pixelatorEffectConfig.rippleMagnitude,
+                    pixelatorEffectConfig.rippleSpeed,
+                    pixelatorEffectConfig.rippleDelay,
+                    pixelatorEffectConfig.opacity);
         }
     }
 }
@@ -55,7 +59,17 @@ export class Pixelator {
         }
     }
 
+
+
     public createGif(config: IPixelatorConfig) {
+
+        let effects = [];
+        if (config.effects) {
+            if (config.effects.reflection) {
+                effects.push(PixelatorEffectFactory.getPixelatorEffect('reflection', config.effects.reflection) as Reflection);
+            }
+        }
+
         let frames:ImageData[] = [];
         for (let t = 0; t < config.frames; t++) {
             let p = new PixelatorFrame(config.width, config.height);
@@ -63,13 +77,13 @@ export class Pixelator {
             if (config.background && skyConfig) {
                 var sky: IPixelatorBackground = this.getBackground(skyConfig);
                 p.drawSky(t, sky);
+                if (config.background.sky.sun) {
+                    p.drawCircleFilled(config.background.sky.sun);
+                }
             }
 
-            if (config.effects) {
-                if (config.effects.reflection) {
-                    var reflection: Reflection = PixelatorEffectFactory.getPixelatorEffect('reflection', config.effects.reflection) as Reflection;
-                    reflection.applyEffect(p);
-                }
+            for (let effect of effects) {
+                effect.applyEffect(t, p);
             }
 
             frames.push(p.getImageData());

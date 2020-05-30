@@ -2,6 +2,13 @@ import * as Canvas from 'canvas';
 import { PixelatorColor } from './pixelatorColor';
 import { IPixelatorBackground } from './pixelator';
 
+export interface ISunConfiguration {
+    x: number;
+    y: number;
+    radius: number;
+    color: string;
+}
+
 export class PixelatorFrame {
 
     imageData: ImageData
@@ -23,7 +30,7 @@ export class PixelatorFrame {
     public getImageData(): ImageData {
         return this.imageData;
     }
-    
+
 
     public getPixel(x: number, y: number): PixelatorColor {
         var red: number = y * (this.width * 4) + x * 4;
@@ -47,9 +54,30 @@ export class PixelatorFrame {
         }
     }
 
+    drawCircle(sunConfig: ISunConfiguration) {
+        const PI = 3.1415926535;
+        let i, angle, x1, y1;
+        for (i = 0; i < 360; i += 0.1) {
+            angle = i;
+            x1 = sunConfig.radius * Math.cos(angle * PI / 180);
+            y1 = sunConfig.radius * Math.sin(angle * PI / 180);
+            this.setPixel(Math.round(sunConfig.x + x1), Math.round(sunConfig.y + y1), PixelatorColor.fromHex(sunConfig.color));
+        }
+    }
+
+    drawCircleFilled(sunConfig: ISunConfiguration) {
+        for (let x = -sunConfig.radius; x < sunConfig.radius ; x++)
+        {
+            let height = Math.sqrt(sunConfig.radius * sunConfig.radius - x * x);
+            for (let y = -height; y < height; y++) {
+                this.setPixel(x + sunConfig.x, Math.round(y + sunConfig.y), PixelatorColor.fromHex(sunConfig.color));
+            }
+        }
+    }
+
     drawSky(t: number, sky: IPixelatorBackground) {
 
-        let colors = Array.from(sky.theme, (v,k) => { return PixelatorColor.fromHex(v);  });
+        let colors = Array.from(sky.theme, (v, k) => { return PixelatorColor.fromHex(v); });
         if (sky.height > this.height) {
             throw new Error("height must be less than max height");
         }

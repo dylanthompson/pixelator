@@ -5,6 +5,7 @@ import { PixelatorFrame } from './pixelatorFrame';
 import { Gradation } from './gradations/gradation';
 import { GradationFactory } from './gradations/gradationFactory';
 import { IPixelatorConfig, IPixelatorBackgroundConfiguration } from './configuration';
+import { Reflection, IReflectionConfiguration } from './reflection'
 
 export interface IPixelatorBackground {
     name: string;
@@ -12,7 +13,25 @@ export interface IPixelatorBackground {
     speed: number;
     theme: string[];
     gradation: Gradation;
-} 
+}
+
+
+export interface IPixelatorEffect {
+    applyEffect(frame: PixelatorFrame): void;
+}
+
+export class PixelatorEffectFactory {
+    public static getPixelatorEffect(name: string, config: any): IPixelatorEffect {
+        switch (name) {
+            case "reflection":
+            default:
+                let pixelatorEffectConfig = config as IReflectionConfiguration;
+                return new Reflection(pixelatorEffectConfig.top,
+                    pixelatorEffectConfig.rippleDepth,
+                    pixelatorEffectConfig.rippleMagnitude);
+        }
+    }
+}
 
 export class Pixelator {
 
@@ -45,6 +64,14 @@ export class Pixelator {
                 var sky: IPixelatorBackground = this.getBackground(skyConfig);
                 p.drawSky(t, sky);
             }
+
+            if (config.effects) {
+                if (config.effects.reflection) {
+                    var reflection: Reflection = PixelatorEffectFactory.getPixelatorEffect('reflection', config.effects.reflection) as Reflection;
+                    reflection.applyEffect(p);
+                }
+            }
+
             frames.push(p.getImageData());
         }
 

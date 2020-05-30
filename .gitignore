@@ -6,3 +6,4 @@
 **/*.js.map
 **/*.js
 **/package-lock.json
+test/pixelator-0.0.1.tgz

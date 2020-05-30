@@ -9,6 +9,13 @@ export interface ISunConfiguration {
     color: string;
 }
 
+export interface IMountainConfiguration {
+    color: string;
+    v1: ICoord;
+    v2: ICoord;
+    v3: ICoord;
+}
+
 export interface ICoord {
     x: number;
     y: number;

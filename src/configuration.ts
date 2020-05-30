@@ -1,6 +1,6 @@
 import { GradationType } from "./gradations/gradation";
 import { IReflectionConfiguration } from './reflection';
-import { ISunConfiguration } from "./pixelatorFrame";
+import { ISunConfiguration, IMountainConfiguration } from "./pixelatorFrame";
 export interface IPixelatorConfig {
     name: string;
     height: number;
@@ -11,6 +11,7 @@ export interface IPixelatorConfig {
         reflection: IReflectionConfiguration | null;
     }
     background: { [key: string]: IPixelatorBackgroundConfiguration };
+    mountains: IMountainConfiguration[] | null;
 }
 
 export interface IPixelatorBackgroundConfiguration {

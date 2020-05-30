@@ -44,13 +44,13 @@
             "name": "purple-sky-recreate",
             "height": 256,
             "width": 256,
-            "frames": 256,
+            "frames": 16,
             "delay": 60,
             "background": {
                 "sky": {
                     "name": "purple sky",
                     "height": 180,
-                    "speed": 0.05,
+                    "speed": 0.08,
                     "theme": "practice-purple",
                     "gradation": {
                         "numColors": 0,
@@ -59,8 +59,8 @@
                     },
                     "sun": {
                         "x": 180,
-                        "y": 160,
-                        "radius": 24,
+                        "y": 170,
+                        "radius": 28,
                         "color": "#FCECFC"
                     }
                 }
@@ -69,15 +69,30 @@
                 {
                     "color": "#FCECFC",
                     "v1": {
-                        "x": 0,
+                        "x": -40,
                         "y": 180
                     },
                     "v2": {
-                        "x": 80,
+                        "x": 40,
                         "y": 120
                     },
                     "v3": {
-                        "x": 160,
+                        "x": 120,
+                        "y": 180
+                    }
+                },
+                {
+                    "color": "#FCECFC",
+                    "v1": {
+                        "x": 200,
+                        "y": 180
+                    },
+                    "v2": {
+                        "x": 255,
+                        "y": 150
+                    },
+                    "v3": {
+                        "x": 255,
                         "y": 180
                     }
                 },
@@ -89,25 +104,10 @@
                     },
                     "v2": {
                         "x": 120,
-                        "y": 150
+                        "y": 140
                     },
                     "v3": {
                         "x": 180,
-                        "y": 180
-                    }
-                },
-                {
-                    "color": "#FCECFC",
-                    "v1": {
-                        "x": 200,
-                        "y": 180
-                    },
-                    "v2": {
-                        "x": 256,
-                        "y": 130
-                    },
-                    "v3": {
-                        "x": 256,
                         "y": 180
                     }
                 }
@@ -115,7 +115,7 @@
             "effects": {
                 "reflection": {
                     "top": 180,
-                    "rippleDepth": 4,
+                    "rippleDepth": 3,
                     "rippleMagnitude": 3,
                     "rippleSpeed": 1,
                     "rippleDelay": 8,

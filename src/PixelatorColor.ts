@@ -23,4 +23,25 @@ export class PixelatorColor {
         else
             throw new Error("Invalid Hex");
     }
+
+    private getVectorMagntiude() {
+        return Math.sqrt(Math.pow(this.red, 2) + Math.pow(this.green, 2) + Math.pow(this.blue, 2));
+    }
+
+    private trim(rgbValue: number) {
+        return Math.round(rgbValue) % 256;
+    }
+
+    private getUnitVector(): PixelatorColor {
+        let magnitude = this.getVectorMagntiude();
+        return new PixelatorColor(this.trim(this.red / magnitude), this.trim(this.green / magnitude), this.trim(this.blue / magnitude), this.alpha)
+    }
+
+    public getMagnitudeVector(magnitude: number) {
+        let startVector = this.getUnitVector();
+        startVector.red *= magnitude;
+        startVector.green *= magnitude;
+        startVector.blue *= magnitude;
+        return startVector;
+    }
 }

@@ -158,8 +158,17 @@ export class PixelatorFrame {
         }
     }
 
-    drawMountain(vertices: ICoord[], color: PixelatorColor) {
+    drawMountain(vertices: [ICoord, ICoord, ICoord], color: PixelatorColor) {
+        let p1 = vertices[0];
+        let p2 = vertices[1];
+        let p3 = vertices[2];
         this.fillTriangle(vertices, color);
+
+        let backgroundColorAtPeak = this.getPixel(p2.x, p2.y);
+        let delta = backgroundColorAtPeak.getMagnitudeVector(16);
+        let newColor = new PixelatorColor(color.red + delta.red, color.green + delta.green, color.blue + delta.blue, color.alpha);
+        this.drawLine(p1.x, p1.y, p2.x, p2.y, newColor);
+        this.drawLine(p2.x, p2.y, p3.x, p3.y, newColor);
     }
 
     drawSky(t: number, sky: IPixelatorBackground) {
@@ -171,7 +180,7 @@ export class PixelatorFrame {
         let y = 0;
         let numberOfGradientSegments = (sky.theme.length * 2) - 2;
         let totalHeightForGradientSections = sky.gradation.getHeightofGradationSection(numberOfGradientSegments)
-        let heightForColorBars = Math.floor((sky.height - totalHeightForGradientSections) / colors.length);
+        let heightForColorBars = Math.ceil((sky.height - totalHeightForGradientSections) / colors.length);
 
         if (sky.gradation.numColors == 2) {
             colors = [colors[0], colors[colors.length - 1]];

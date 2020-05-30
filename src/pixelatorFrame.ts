@@ -9,6 +9,32 @@ export interface ISunConfiguration {
     color: string;
 }
 
+export enum StarSize {
+    small = "small",
+    medium = "medium",
+    large = "large",
+}
+
+export interface IStar {
+    x: number;
+    y: number;
+    size: StarSize;
+    brightness: number;
+    twinkleMagnitude: number; // 0 means no change, otherwise its a number that indicates how dark or bright to animate the twinkle (say -32, 32 for darker, lighter)
+    twinkleFrequency: number; // the chance that on this frame twinkling will trigger
+    twinkleLength: number; // number of frames to show the twinkle
+}
+
+export interface IStarsConfiguration {
+    // how many stars in sky
+    frequency: number;
+    // distribution of types of stars among the stars created
+    smallOdds: number; // chance that the star generated is small = smallF / sum of all cases
+    mediumOdds: number;
+    largeOdds: number;
+    planetOdds: number;
+}
+
 export interface IMountainConfiguration {
     color: string;
     v1: ICoord;
@@ -133,7 +159,7 @@ export class PixelatorFrame {
     private fillBottomFlatTriangle(v1: ICoord, v2: ICoord, v3: ICoord, color: PixelatorColor) {
         let invslope1 = (v2.x - v1.x) / (v2.y - v1.y);
         let invslope2 = (v3.x - v1.x) / (v3.y - v1.y);
-
+        
         let curx1 = v1.x;
         let curx2 = v1.x;
 
@@ -162,13 +188,16 @@ export class PixelatorFrame {
         let p1 = vertices[0];
         let p2 = vertices[1];
         let p3 = vertices[2];
-        this.fillTriangle(vertices, color);
-
         let backgroundColorAtPeak = this.getPixel(p2.x, p2.y);
-        let delta = backgroundColorAtPeak.getMagnitudeVector(16);
-        let newColor = new PixelatorColor(color.red + delta.red, color.green + delta.green, color.blue + delta.blue, color.alpha);
-        this.drawLine(p1.x, p1.y, p2.x, p2.y, newColor);
-        this.drawLine(p2.x, p2.y, p3.x, p3.y, newColor);
+        this.fillTriangle(vertices, color);
+        let delta1 = backgroundColorAtPeak.getMagnitudeVector(16);
+        let delta2 = backgroundColorAtPeak.getMagnitudeVector(32);
+        let newColor1 = new PixelatorColor(color.red + delta1.red, color.green + delta1.green, color.blue + delta1.blue, color.alpha);
+        let newColor2 = new PixelatorColor(color.red + delta2.red, color.green + delta2.green, color.blue + delta2.blue, color.alpha);
+        this.drawLine(p1.x, p1.y, p2.x, p2.y, newColor2);
+        this.drawLine(p2.x, p2.y, p3.x, p3.y, newColor2);
+        this.drawLine(p1.x, p1.y - 1, p2.x, p2.y - 1, newColor1);
+        this.drawLine(p2.x, p2.y - 1, p3.x, p3.y - 1, newColor1);
     }
 
     drawSky(t: number, sky: IPixelatorBackground) {

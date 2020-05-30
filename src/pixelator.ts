@@ -1,7 +1,7 @@
 
 var GifEncoder = require('gif-encoder');
 import * as fs from 'fs';
-import { PixelatorFrame } from './pixelatorFrame';
+import { PixelatorFrame, IStarsConfiguration, IStar } from './pixelatorFrame';
 import { Gradation } from './gradations/gradation';
 import { GradationFactory } from './gradations/gradationFactory';
 import { IPixelatorConfig, IPixelatorBackgroundConfiguration } from './configuration';
@@ -14,6 +14,21 @@ export interface IPixelatorBackground {
     speed: number;
     theme: string[];
     gradation: Gradation;
+}
+
+export class Stars {
+    private stars: IStar[] = [];
+    constructor(private config: IStarsConfiguration, frame: PixelatorFrame, sky: IPixelatorBackground) {
+        this.generateStars(config, frame, sky);
+    }
+
+    private generateStars(config: IStarsConfiguration, frame: PixelatorFrame, sky: IPixelatorBackground) {
+        for (var y = 0; y < sky.height; y++) {
+            for (var x = 0; x > frame.width; x++) {
+
+            }
+        }
+    }
 }
 
 
@@ -63,12 +78,18 @@ export class Pixelator {
 
     public createGif(config: IPixelatorConfig) {
 
-        let effects = [];
+        let effects:IPixelatorEffect[] = [];
         if (config.effects) {
             if (config.effects.reflection) {
                 effects.push(PixelatorEffectFactory.getPixelatorEffect('reflection', config.effects.reflection) as Reflection);
             }
         }
+
+        // let backgroundEffects:IPixelatorEffect[] = [];
+
+        // if (config.background.sky.stars) {
+        //     backgroundEffects.push(new Stars(config.background.sky.stars));
+        // }
 
         let frames:ImageData[] = [];
         for (let t = 0; t < config.frames; t++) {
@@ -80,6 +101,7 @@ export class Pixelator {
                 if (config.background.sky.sun) {
                     p.drawCircleFilled(config.background.sky.sun);
                 }
+
             }
 
             if (config.mountains) {

@@ -44,7 +44,7 @@
             "name": "purple-sky-recreate",
             "height": 256,
             "width": 256,
-            "frames": 16,
+            "frames": 128,
             "delay": 60,
             "background": {
                 "sky": {
@@ -59,10 +59,17 @@
                     },
                     "sun": {
                         "x": 180,
-                        "y": 170,
+                        "y": 180,
                         "radius": 28,
                         "color": "#FCECFC"
                     }
+                },
+                "stars": {
+                    "frequency": 5,
+                    "smallOdds": 8,
+                    "mediumOdds": 1,
+                    "largeOdds": 1,
+                    "planetOdds": 0
                 }
             },
             "mountains": [

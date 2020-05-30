@@ -81,6 +81,11 @@ export class Pixelator {
                     p.drawCircleFilled(config.background.sky.sun);
                 }
             }
+            var p1 = { x: 0, y: 180 };
+            var p2 = { x: 80, y: 120 };
+            var p3 = { x: 160, y: 180 };
+
+            p.drawMountain([p1, p2, p3], PixelatorColor.fromHex("#010101"));
 
             for (let effect of effects) {
                 effect.applyEffect(t, p);

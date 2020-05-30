@@ -54,19 +54,29 @@ export class Pixelator {
     print(config: IPixelatorConfig, frames: ImageData[]) {
         var gif = new GifEncoder(config.width, config.height, {
             highWaterMark: 32 * 1024 * 1024 // 32MB
-          });
+        });
 
-        gif.setRepeat(0);
+        gif.setDelay(config.delay);
+        
         var file = fs.createWriteStream('./gifs/' + config.name + '.gif');
 
-        gif.pipe(file);
-        
-        // Write out the image into memory  
+        gif.on('data', (buffer: Buffer) => {
+            file.write(buffer);
+        });
+
+        gif.on('end', () => {
+            file.end();
+        });
+
+        gif.on('finish#stop', () => {
+            file.end();
+        });
+
+        gif.setRepeat(0);
         gif.writeHeader();
         for (let frame of frames) {
             gif.addFrame(frame.data);
         }
-        // gif.addFrame(pixels); // Write subsequent rgba arrays for more frames
         gif.finish();
     }
 }

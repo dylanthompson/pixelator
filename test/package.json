@@ -4,11 +4,14 @@
   "description": "Test app for the pixelator package",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "if exist pixelator-0.0.1.tgz del /F /Q pixelator-0.0.1.tgz",
+    "copy": "xcopy /I /Q /Y /F ..\\dist\\pixelator-0.0.1.tgz ..\\test\\",
+    "build": "npm run clean && npm run copy && npm install && tsc -d"
   },
   "author": "dylan thompson",
   "license": "ISC",
   "dependencies": {
-    "pixelator": "pixelator-0.0.1.tgz"
+    "pixelator": "file:pixelator-0.0.1.tgz"
   }
 }

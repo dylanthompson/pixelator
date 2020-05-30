@@ -57,6 +57,11 @@ export class PixelatorFrame {
         let numberOfGradientSegments = (sky.theme.length * 2) - 2;
         let totalHeightForGradientSections = sky.gradation.getHeightofGradationSection(numberOfGradientSegments)
         let heightForColorBars = Math.floor((sky.height - totalHeightForGradientSections) / colors.length);
+
+        if (sky.gradation.numColors == 2) {
+            colors = [colors[0], colors[colors.length - 1]];
+        }
+
         for (var i = 0; i < colors.length; i++) {
             let color = colors[i];
             let barMax = y + heightForColorBars;
@@ -70,7 +75,7 @@ export class PixelatorFrame {
                 } else {
                     colorsToUse = [colors[i], colors[i + 1]]
                 }
-                y = sky.gradation.drawGradation(t, y, sky.speed, colors, this);
+                y = sky.gradation.drawGradation(t, y, sky.speed, colorsToUse, this);
             }
         }
     }

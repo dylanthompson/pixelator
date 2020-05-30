@@ -5,6 +5,7 @@ export interface IPixelatorConfig {
     height: number;
     width: number;
     frames: number;
+    delay: number;
     background: { [key: string]: IPixelatorBackgroundConfiguration };
 }
 

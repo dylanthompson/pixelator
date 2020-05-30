@@ -5,6 +5,7 @@
             "height": 512,
             "width": 512,
             "frames": 32,
+            "delay": 100,
             "background": {
                 "sky": {
                     "name": "material-blues-purples",
@@ -24,6 +25,7 @@
             "height": 512,
             "width": 512,
             "frames": 256,
+            "delay": 100,
             "background": {
                 "sky": {
                     "name": "material-blues-purples",
@@ -40,13 +42,14 @@
         },
         "purple-sky-recreate": {
             "name": "purple-sky-recreate",
-            "height": 256,
-            "width": 256,
-            "frames": 1,
+            "height": 512,
+            "width": 512,
+            "frames": 32,
+            "delay": 80,
             "background": {
                 "sky": {
                     "name": "purple sky",
-                    "height": 168,
+                    "height": 320,
                     "speed": 1,
                     "theme": "material-purple",
                     "gradation": {
@@ -55,13 +58,20 @@
                         "magnitude": 5
                     }
                 }
+            },
+            "effects": {
+                "reflection": {
+                    "top": 320,
+                    "ripple": 3
+                }
             }
         },
         "purple-animated": {
             "name": "purple-animated",
             "height": 512,
             "width": 512,
-            "frames": 64,
+            "frames": 32,
+            "delay": 100,
             "background": {
                 "sky": {
                     "name": "bpurple",
@@ -81,6 +91,7 @@
             "height": 2096,
             "width": 512,
             "frames": 120,
+            "delay": 100,
             "background": {
                 "sky": {
                     "name": "yellow-sky-fast",
@@ -99,7 +110,8 @@
             "name": "yellow-dots",
             "height": 512,
             "width": 512,
-            "frames": 128,
+            "frames": 32,
+            "delay": 65,
             "background": {
                 "sky": {
                     "name": "yellow-field",
@@ -119,6 +131,7 @@
             "height": 1048,
             "width": 1048,
             "frames": 1,
+            "delay": 100,
             "background": {
                 "sky": {
                     "name": "rainbow-sky",
@@ -138,6 +151,7 @@
             "height": 256,
             "width": 512,
             "frames": 1000,
+            "delay": 100,
             "background": {
                 "sky": {
                     "name": "teal-white",
@@ -154,6 +168,7 @@
         }
     },
     "queue": [
-        "yellow-dots"
+        "yellow-dots",
+        "purple-sky-recreate"
     ]
 }

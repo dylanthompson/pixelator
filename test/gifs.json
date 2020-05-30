@@ -44,7 +44,7 @@
             "name": "purple-sky-recreate",
             "height": 256,
             "width": 256,
-            "frames": 12,
+            "frames": 256,
             "delay": 60,
             "background": {
                 "sky": {
@@ -67,8 +67,8 @@
             },
             "effects": {
                 "reflection": {
-                    "top": 170,
-                    "rippleDepth": 5,
+                    "top": 180,
+                    "rippleDepth": 4,
                     "rippleMagnitude": 3,
                     "rippleSpeed": 1,
                     "rippleDelay": 8,

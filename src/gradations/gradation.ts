@@ -6,8 +6,9 @@ export enum GradationType {
     Line = "line"
 }
 export abstract class Gradation {
+    stagger: number = 0;
     abstract getHeightofGradationSection(numberOfGradientSegments: number): number;
-    abstract drawGradation(time: number, yIndex: number, skySpeed: number, colors: PixelatorColor[], pixelatorFrame: PixelatorFrame): number;
+    abstract drawGradation(time: number, yIndex: number, skySpeed: number, colors: PixelatorColor[], stagger: number, pixelatorFrame: PixelatorFrame): number;
     constructor(public magnitude: number, public numColors: number) {
 
     }

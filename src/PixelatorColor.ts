@@ -1,3 +1,32 @@
+export var easingFunctions: {[key: string]: (t:number) => number }= {
+    // no easing, no acceleration
+    linear: (t: number) => t,
+    // accelerating from zero velocity
+    easeInQuad: (t: number) => t*t,
+    // decelerating to zero velocity
+    easeOutQuad: (t: number) => t*(2-t),
+    // acceleration until halfway, then deceleration
+    easeInOutQuad: (t: number) => t<.5 ? 2*t*t : -1+(4-2*t)*t,
+    // accelerating from zero velocity 
+    easeInCubic: (t: number) => t*t*t,
+    // decelerating to zero velocity 
+    easeOutCubic: (t: number) => (--t)*t*t+1,
+    // acceleration until halfway, then deceleration 
+    easeInOutCubic: (t: number) => t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1,
+    // accelerating from zero velocity 
+    easeInQuart: (t: number) => t*t*t*t,
+    // decelerating to zero velocity 
+    easeOutQuart: (t: number) => 1-(--t)*t*t*t,
+    // acceleration until halfway, then deceleration
+    easeInOutQuart: (t: number) => t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t,
+    // accelerating from zero velocity
+    easeInQuint: (t: number) => t*t*t*t*t,
+    // decelerating to zero velocity
+    easeOutQuint: (t: number) => 1+(--t)*t*t*t*t,
+    // acceleration until halfway, then deceleration 
+    easeInOutQuint: (t: number) => t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t
+  }
+
 export class PixelatorColor {
     constructor(public red: number, public green: number, public blue: number, public alpha: number) { }
 
@@ -7,7 +36,14 @@ export class PixelatorColor {
     }
 
     public toHex(): string {
-        return "#" + this.componentToHex(this.red) + this.componentToHex(this.green) + this.componentToHex(this.green);
+        return "#" + this.componentToHex(this.red) + this.componentToHex(this.green) + this.componentToHex(this.blue);
+    }
+
+    public static interpolate(linearDistancePercentage:number, interpolation: string = "linear"): number {
+        if (!(interpolation in easingFunctions))  {
+            throw new Error("Bad interpolation function name");
+        }
+        return easingFunctions[interpolation](linearDistancePercentage);
     }
 
     public static fromHex(hex: string): PixelatorColor {
@@ -24,7 +60,7 @@ export class PixelatorColor {
             throw new Error("Invalid Hex");
     }
 
-    private getVectorMagntiude() {
+    public getMagnitude() {
         return Math.sqrt(Math.pow(this.red, 2) + Math.pow(this.green, 2) + Math.pow(this.blue, 2));
     }
 
@@ -32,8 +68,8 @@ export class PixelatorColor {
         return rgbValue < 0 ? 0 : rgbValue > 255 ? 255 : rgbValue;
     }
 
-    private getUnitVector(): PixelatorColor {
-        let magnitude = this.getVectorMagntiude();
+    public getUnitVector(): PixelatorColor {
+        let magnitude = this.getMagnitude();
         return new PixelatorColor(this.trim(this.red / magnitude), this.trim(this.green / magnitude), this.trim(this.blue / magnitude), this.alpha)
     }
 
@@ -43,6 +79,10 @@ export class PixelatorColor {
         startVector.green = Math.round(startVector.green * magnitude);
         startVector.blue = Math.round(startVector.blue * magnitude);
         return startVector;
+    }
+
+    public static getColorTweenVector(fromColor: PixelatorColor, toColor: PixelatorColor) {
+        return new PixelatorColor(toColor.red - fromColor.red, toColor.green - fromColor.green, toColor.blue - fromColor.blue, toColor.alpha);
     }
 
     public static colorTween(magnitude: number, fromColor: PixelatorColor, toColor: PixelatorColor) {
@@ -62,7 +102,7 @@ export class PixelatorColor {
 
     public tween(magnitude: number, toColor: PixelatorColor) {
         var tweenColor = PixelatorColor.colorTween(magnitude, this, toColor);
-        return new PixelatorColor(tweenColor.red, tweenColor.green, tweenColor.blue, tweenColor.alpha);
+        return new PixelatorColor(this.trim(tweenColor.red), this.trim(tweenColor.green), this.trim(tweenColor.blue), this.trim(tweenColor.alpha));
     }
 
     public brighten(magnitude: number) {

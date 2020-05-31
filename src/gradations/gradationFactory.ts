@@ -10,7 +10,7 @@ export class GradationFactory {
                 return new LineGradation(gradationConfig.magnitude, gradationConfig.numColors);
             case GradationType.Field:
             default:
-                return new FieldGradation(gradationConfig.magnitude, gradationConfig.numColors);
+                return new FieldGradation(gradationConfig.magnitude, gradationConfig.numColors, gradationConfig.stagger);
         }
     }
 }

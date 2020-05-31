@@ -20,7 +20,7 @@ export class LineGradation extends Gradation {
         return this.getNumberOfLines(this.magnitude + 1) * 2;
     }
 
-    drawGradation(time: number, yIndex: number, skySpeed: number, colors: PixelatorColor[], pixelatorFrame: PixelatorFrame): number {
+    drawGradation(time: number, yIndex: number, skySpeed: number, colors: PixelatorColor[], stagger: number, pixelatorFrame: PixelatorFrame): number {
         let flipColor = (curColor: PixelatorColor) => {
             if (curColor == nextColor) {
                 return color;

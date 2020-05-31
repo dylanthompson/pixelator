@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import { PixelatorFrame, IStarsConfiguration, IStar, StarSize } from './pixelatorFrame';
 import { Gradation } from './gradations/gradation';
 import { GradationFactory } from './gradations/gradationFactory';
-import { IPixelatorConfig, IPixelatorBackgroundConfiguration } from './configuration';
+import { IPixelatorConfig, IPixelatorBackgroundConfiguration, IThemeConfiguration, ThemeProvider } from './configuration';
 import { Reflection, IReflectionConfiguration } from './reflection'
 import { PixelatorColor } from './pixelatorColor';
 
@@ -92,11 +92,16 @@ export class Pixelator {
         this.themes = themes;
     }
 
-    private getTheme(themeName: string) {
-        return this.themes[themeName];
+    private getTheme(theme: string | IThemeConfiguration): string[] {
+        if (typeof theme == 'string') {
+            return this.themes[theme];
+        } else {
+            return ThemeProvider.getTheme(theme);
+        }
+        
     }
 
-    private getBackground(c: IPixelatorBackgroundConfiguration) {
+    private getBackground(c: IPixelatorBackgroundConfiguration): IPixelatorBackground {
         return {
             name: c.name,
             height: c.height,

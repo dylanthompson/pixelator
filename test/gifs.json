@@ -44,18 +44,24 @@
             "name": "purple-sky-recreate",
             "height": 256,
             "width": 256,
-            "frames": 128,
+            "frames": 15,
             "delay": 60,
             "background": {
                 "sky": {
                     "name": "purple sky",
                     "height": 180,
-                    "speed": 0.08,
-                    "theme": "practice-purple",
+                    "speed": 0,
+                    "theme":  {
+                        "name": null,
+                        "keyColors": ["#000000", "#CC55DD"],
+                        "numColors": 8,
+                        "interpolation": "easeInCubic"
+                    },
                     "gradation": {
                         "numColors": 0,
                         "type": "field",
-                        "magnitude": 5
+                        "magnitude": 5,
+                        "stagger": 32
                     },
                     "sun": {
                         "x": 180,

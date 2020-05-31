@@ -253,7 +253,7 @@ export class PixelatorFrame {
                 } else {
                     colorsToUse = [colors[i], colors[i + 1]]
                 }
-                y = sky.gradation.drawGradation(t, y, sky.speed, colorsToUse, this);
+                y = sky.gradation.drawGradation(t, y, sky.speed, colorsToUse, i % 2 == 0 ? 0 : sky.gradation.stagger, this);
             }
         }
     }

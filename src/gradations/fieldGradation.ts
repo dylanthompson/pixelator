@@ -3,9 +3,10 @@ import { PixelatorColor } from "../pixelatorColor";
 import { PixelatorFrame } from "../pixelatorFrame";
 
 export class FieldGradation extends Gradation {
-
-    constructor(magnitude: number, numColors: number) {
+    public stagger: number;
+    constructor(magnitude: number, numColors: number, stagger: number) {
         super(magnitude, numColors);
+        this.stagger = stagger;
     }
 
     public getHeightofGradationSection(numOfGradationSegments: number): number {
@@ -32,7 +33,7 @@ export class FieldGradation extends Gradation {
         }
     }
 
-    public drawGradation(time: number, yIndex: number, skySpeed: number, colors: PixelatorColor[], pixelatorFrame: PixelatorFrame): number {
+    public drawGradation(time: number, yIndex: number, skySpeed: number, colors: PixelatorColor[], stagger: number, pixelatorFrame: PixelatorFrame): number {
 
         let c1, c2, c3, c4;
         if (colors.length < 4) {
@@ -44,13 +45,19 @@ export class FieldGradation extends Gradation {
 
         // If bottom, only draw color bar
         // if top or in the middle, color bar then bottom gradient
+        let curSpeed = skySpeed;
+        let curTime = time;
+        if (skySpeed == 0 && stagger > 0) {
+            curSpeed = 1;
+            curTime = 0;
+        }
         for (var g = this.magnitude; g > 0; g--) {
-            this.fillGradientRow(time, yIndex, skySpeed, pixelatorFrame, c1, c2, g);
+            this.fillGradientRow(curTime + stagger, yIndex, curSpeed, pixelatorFrame, c1, c2, g);
             yIndex++;
         }
 
         for (var g2 = 1; g2 < this.magnitude; g2++) {
-            this.fillGradientRow(time, yIndex, skySpeed, pixelatorFrame, c3, c4, g2);
+            this.fillGradientRow(curTime + stagger, yIndex, curSpeed, pixelatorFrame, c3, c4, g2);
             yIndex++;
         }
 

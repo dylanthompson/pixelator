@@ -128,7 +128,7 @@
                     "rippleMagnitude": 3,
                     "rippleSpeed": 1,
                     "rippleDelay": 8,
-                    "opacity": 0.7
+                    "opacity": 0.9
                 }
             }
         },
@@ -330,7 +330,6 @@
         }
     },
     "queue": [
-        "purple-sky-recreate",
-        "yellow-sky"
+        "purple-sky-recreate"
     ]
 }

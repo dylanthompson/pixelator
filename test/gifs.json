@@ -44,7 +44,7 @@
             "name": "purple-sky-recreate",
             "height": 256,
             "width": 256,
-            "frames": 15,
+            "frames": 128,
             "delay": 60,
             "background": {
                 "sky": {

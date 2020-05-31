@@ -19,10 +19,12 @@ export interface IStar {
     x: number;
     y: number;
     size: StarSize;
-    brightness: number;
+    color: PixelatorColor;
     twinkleMagnitude: number; // 0 means no change, otherwise its a number that indicates how dark or bright to animate the twinkle (say -32, 32 for darker, lighter)
     twinkleFrequency: number; // the chance that on this frame twinkling will trigger
     twinkleLength: number; // number of frames to show the twinkle
+    isTwinkling: boolean;
+    animationFrame: number;
 }
 
 export interface IStarsConfiguration {
@@ -33,6 +35,9 @@ export interface IStarsConfiguration {
     mediumOdds: number;
     largeOdds: number;
     planetOdds: number;
+
+    color: string;
+    twinkleMagnitude: number;
 }
 
 export interface IMountainConfiguration {
@@ -184,12 +189,32 @@ export class PixelatorFrame {
         }
     }
 
-    drawMountain(vertices: [ICoord, ICoord, ICoord], color: PixelatorColor) {
-        let p1 = vertices[0];
-        let p2 = vertices[1];
-        let p3 = vertices[2];
+    drawStars(stars:IStar[]) {
+        for (let star of stars) {
+            if (star.isTwinkling) {
+                this.setPixel(star.x, star.y, star.color.brighten(star.twinkleMagnitude));
+                if (star.animationFrame >= star.twinkleLength) {
+                    star.isTwinkling = false;
+                    star.animationFrame = 0;
+                }
+            } else {
+                this.setPixel(star.x, star.y, star.color);
+                if (star.animationFrame > star.twinkleFrequency) {
+                    star.isTwinkling = true;
+                    star.animationFrame = 0;
+                }
+            }
+            star.animationFrame++;
+        }
+    }
+
+    drawMountain(mountain:IMountainConfiguration) {
+        let p1 = mountain.v1;
+        let p2 = mountain.v2;
+        let p3 = mountain.v3;
         let backgroundColorAtPeak = this.getPixel(p2.x, p2.y);
-        this.fillTriangle(vertices, color);
+        let color = PixelatorColor.fromHex(mountain.color);
+        this.fillTriangle([p1, p2, p3], color);
         let delta1 = backgroundColorAtPeak.getMagnitudeVector(16);
         let delta2 = backgroundColorAtPeak.getMagnitudeVector(32);
         let newColor1 = new PixelatorColor(color.red + delta1.red, color.green + delta1.green, color.blue + delta1.blue, color.alpha);

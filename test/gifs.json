@@ -62,19 +62,21 @@
                         "y": 180,
                         "radius": 28,
                         "color": "#FCECFC"
+                    },
+                    "stars": {
+                        "frequency": 0.001,
+                        "smallOdds": 8,
+                        "mediumOdds": 1,
+                        "largeOdds": 1,
+                        "planetOdds": 0,
+                        "twinkleMagnitude": 128,
+                        "color": "#aa99aa"
                     }
-                },
-                "stars": {
-                    "frequency": 5,
-                    "smallOdds": 8,
-                    "mediumOdds": 1,
-                    "largeOdds": 1,
-                    "planetOdds": 0
                 }
             },
             "mountains": [
                 {
-                    "color": "#FCECFC",
+                    "color": "#0A0A0A",
                     "v1": {
                         "x": -40,
                         "y": 180
@@ -89,7 +91,7 @@
                     }
                 },
                 {
-                    "color": "#FCECFC",
+                    "color": "#0A0A0A",
                     "v1": {
                         "x": 200,
                         "y": 180
@@ -104,7 +106,7 @@
                     }
                 },
                 {
-                    "color": "#FCECFC",
+                    "color": "#0A0A0A",
                     "v1": {
                         "x": 60,
                         "y": 180
@@ -130,6 +132,102 @@
                 }
             }
         },
+
+
+        "yellow-sky": {
+            "name": "yellow-sky",
+            "height": 256,
+            "width": 256,
+            "frames": 128,
+            "delay": 60,
+            "background": {
+                "sky": {
+                    "name": "yellow sky",
+                    "height": 180,
+                    "speed": 0.08,
+                    "theme": "practice-yellow",
+                    "gradation": {
+                        "numColors": 0,
+                        "type": "field",
+                        "magnitude": 5
+                    },
+                    "sun": {
+                        "x": 180,
+                        "y": 180,
+                        "radius": 28,
+                        "color": "#FCECFC"
+                    },
+                    "stars": {
+                        "frequency": 0.001,
+                        "smallOdds": 8,
+                        "mediumOdds": 1,
+                        "largeOdds": 1,
+                        "planetOdds": 0,
+                        "twinkleMagnitude": 128,
+                        "color": "#aa99aa"
+                    }
+                }
+            },
+            "mountains": [
+                {
+                    "color": "#0A0A0A",
+                    "v1": {
+                        "x": -40,
+                        "y": 180
+                    },
+                    "v2": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "v3": {
+                        "x": 120,
+                        "y": 180
+                    }
+                },
+                {
+                    "color": "#0A0A0A",
+                    "v1": {
+                        "x": 200,
+                        "y": 180
+                    },
+                    "v2": {
+                        "x": 255,
+                        "y": 150
+                    },
+                    "v3": {
+                        "x": 255,
+                        "y": 180
+                    }
+                },
+                {
+                    "color": "#0A0A0A",
+                    "v1": {
+                        "x": 60,
+                        "y": 180
+                    },
+                    "v2": {
+                        "x": 120,
+                        "y": 140
+                    },
+                    "v3": {
+                        "x": 180,
+                        "y": 180
+                    }
+                }
+            ],
+            "effects": {
+                "reflection": {
+                    "top": 180,
+                    "rippleDepth": 3,
+                    "rippleMagnitude": 3,
+                    "rippleSpeed": 1,
+                    "rippleDelay": 8,
+                    "opacity": 0.7
+                }
+            }
+        },
+
+
         "purple-animated": {
             "name": "purple-animated",
             "height": 512,
@@ -232,6 +330,7 @@
         }
     },
     "queue": [
-        "purple-sky-recreate"
+        "purple-sky-recreate",
+        "yellow-sky"
     ]
 }

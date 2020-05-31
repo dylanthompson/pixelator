@@ -29,7 +29,7 @@ export class PixelatorColor {
     }
 
     private trim(rgbValue: number) {
-        return Math.round(rgbValue) % 256;
+        return rgbValue < 0 ? 0 : rgbValue > 255 ? 255 : rgbValue;
     }
 
     private getUnitVector(): PixelatorColor {
@@ -39,9 +39,41 @@ export class PixelatorColor {
 
     public getMagnitudeVector(magnitude: number) {
         let startVector = this.getUnitVector();
-        startVector.red *= magnitude;
-        startVector.green *= magnitude;
-        startVector.blue *= magnitude;
+        startVector.red = Math.round(startVector.red * magnitude);
+        startVector.green = Math.round(startVector.green * magnitude);
+        startVector.blue = Math.round(startVector.blue * magnitude);
         return startVector;
+    }
+
+    public static colorTween(magnitude: number, fromColor: PixelatorColor, toColor: PixelatorColor) {
+        var red = toColor.red - fromColor.red;
+        var green = toColor.green - fromColor.green;
+        var blue = toColor.blue - fromColor.blue;
+        let toColorTweenVector = new PixelatorColor(red, green, blue, toColor.alpha).getUnitVector().scale(magnitude);
+        return new PixelatorColor(Math.round(toColorTweenVector.red + fromColor.red),
+        Math.round(toColorTweenVector.green + fromColor.green),
+        Math.round(toColorTweenVector.blue + fromColor.blue),
+            fromColor.alpha);
+    }
+
+    public scale(magnitude: number) {
+        return new PixelatorColor(Math.round(this.red * magnitude), Math.round(this.green * magnitude), Math.round(this.blue * magnitude), this.alpha);
+    }
+
+    public tween(magnitude: number, toColor: PixelatorColor) {
+        var tweenColor = PixelatorColor.colorTween(magnitude, this, toColor);
+        return new PixelatorColor(tweenColor.red, tweenColor.green, tweenColor.blue, tweenColor.alpha);
+    }
+
+    public brighten(magnitude: number) {
+        var brightColor = PixelatorColor.fromHex('#FFFFFF');
+        var brightVector = PixelatorColor.colorTween(magnitude, this, brightColor);
+        return new PixelatorColor(brightVector.red, brightVector.green, brightVector.blue, brightVector.alpha);
+    }
+
+    public darken(magnitude: number) {
+        var darkColor = PixelatorColor.fromHex('#000000');
+        var darkVector = PixelatorColor.colorTween(magnitude, this, darkColor);
+        return new PixelatorColor(darkVector.red, darkVector.green, darkVector.blue, darkVector.alpha);
     }
 }

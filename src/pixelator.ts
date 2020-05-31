@@ -1,7 +1,7 @@
 
 var GifEncoder = require('gif-encoder');
 import * as fs from 'fs';
-import { PixelatorFrame, IStarsConfiguration, IStar } from './pixelatorFrame';
+import { PixelatorFrame, IStarsConfiguration, IStar, StarSize } from './pixelatorFrame';
 import { Gradation } from './gradations/gradation';
 import { GradationFactory } from './gradations/gradationFactory';
 import { IPixelatorConfig, IPixelatorBackgroundConfiguration } from './configuration';
@@ -16,17 +16,49 @@ export interface IPixelatorBackground {
     gradation: Gradation;
 }
 
-export class Stars {
-    private stars: IStar[] = [];
-    constructor(private config: IStarsConfiguration, frame: PixelatorFrame, sky: IPixelatorBackground) {
-        this.generateStars(config, frame, sky);
+export class StarsCollection {
+    private _stars: IStar[] = [];
+    constructor(private config: IStarsConfiguration, width: number, sky: IPixelatorBackground) {
+        this.generateStars(config, width, sky);
     }
 
-    private generateStars(config: IStarsConfiguration, frame: PixelatorFrame, sky: IPixelatorBackground) {
-        for (var y = 0; y < sky.height; y++) {
-            for (var x = 0; x > frame.width; x++) {
+    public get stars(): IStar[] {
+        return this._stars;
+    }
 
+    private getStarType(config: IStarsConfiguration) {
+        let odds = [config.smallOdds, config.mediumOdds, config.largeOdds, config.planetOdds];
+        let results = ['small', 'medium', 'large', 'planet'];
+        let totalOdds = odds.reduce((acum, val) => acum + val);
+        let random = Math.floor(Math.random() * totalOdds);
+
+        for (var i = 0; i < odds.length; i++) {
+            var boundary = odds.filter((n, j) => j <= i).reduce((acum, val) => acum + val);
+            if (random < boundary) {
+                return results[i];
             }
+        }
+        return "small";
+    }
+
+    private generateStars(config: IStarsConfiguration, width: number, sky: IPixelatorBackground) {
+        var numStars = config.frequency * width * sky.height;
+
+        for (let i = 0; i < numStars; i++) {
+
+            let size = StarSize.small; // this.getStarType(config);
+            let star: IStar = { 
+                x: Math.floor(Math.random() * width),
+                y: Math.floor(Math.random() * sky.height),
+                size: size,
+                color: PixelatorColor.fromHex(config.color),
+                twinkleMagnitude: config.twinkleMagnitude, // 0 means no change, otherwise its a number that indicates how dark or bright to animate the twinkle (say -32, 32 for darker, lighter)
+                twinkleFrequency: Math.floor(Math.random() * 10) + 6, // the chance that on this frame twinkling will trigger
+                twinkleLength: Math.floor(Math.random() * 2) + 3, // number of frames to show the twinkle,
+                isTwinkling: false,
+                animationFrame: 0
+            }
+            this._stars.push(star);
         }
     }
 }
@@ -85,28 +117,33 @@ export class Pixelator {
             }
         }
 
-        // let backgroundEffects:IPixelatorEffect[] = [];
+        let starsCollection = null;
+        let skyConfig = config.background.sky;
+        let sky: IPixelatorBackground | null = null;
 
-        // if (config.background.sky.stars) {
-        //     backgroundEffects.push(new Stars(config.background.sky.stars));
-        // }
+        if (skyConfig) {
+            sky = this.getBackground(skyConfig);
+        }
+        if (sky && skyConfig.stars) {
+            starsCollection = new StarsCollection(skyConfig.stars, config.width, sky);
+        }
 
         let frames:ImageData[] = [];
         for (let t = 0; t < config.frames; t++) {
             let p = new PixelatorFrame(config.width, config.height);
-            let skyConfig = config.background['sky'];
-            if (config.background && skyConfig) {
-                var sky: IPixelatorBackground = this.getBackground(skyConfig);
+            if (sky) {   
                 p.drawSky(t, sky);
+                if (starsCollection) {
+                    p.drawStars(starsCollection.stars);
+                }
                 if (config.background.sky.sun) {
                     p.drawCircleFilled(config.background.sky.sun);
                 }
-
             }
 
             if (config.mountains) {
                 for (let mountain of config.mountains) {
-                    p.drawMountain([mountain.v1, mountain.v2, mountain.v3], PixelatorColor.fromHex("#010101"));
+                    p.drawMountain(mountain);
                 }
             }
             

@@ -6,7 +6,7 @@ export class GifGenerator {
 
     constructor(private themes: {[key:string] : string[]},
         private sizes = [512],
-        private animationLengths = [128],
+        private animationLengths = [32],
         private gradationField = [5],
         private gradationLines = [1, 3, 5],
         private backgroundSpeeds = [0],
@@ -164,23 +164,65 @@ var colors = [
     { name: "amber", value: "#ff6f00" },
     { name: "orange", value: "#e65100" },
     { name: "orange-deep", value: "#bf360c" },
-    { name: "brown", value: "#3e2723" }
+    { name: "brown", value: "#3e2723" },
+
+    { name: "dark-red", value: "#6f0000" },
+    { name: "dark-pink", value: "#460017" },
+    { name: "dark-purple", value: "#1F004e" },
+    { name: "dark-purple-deep", value: "#200553" },
+    { name: "dark-indigo", value: "#000041" },
+    { name: "dark-blue", value: "#001161" },
+    { name: "dark-blue-light", value: "#001f5c" },
+    { name: "dark-cyan", value: "#00262a" },
+    { name: "dark-teal", value: "#00150a" },
+    { name: "dark-green", value: "#002300" },
+    { name: "dark-green-light", value: "#002d00" },
+    { name: "dark-lime", value: "#423c00" },
+    { name: "dark-yellow", value: "#ac4100" },
+    { name: "dark-amber", value: "#b42e00" },
+    { name: "dark-orange", value: "#9c0900" },
+    { name: "dark-orange-deep", value: "#770000" },
+    { name: "dark-brown", value: "#0b0000" }
+]
+
+let customThemes = [{
+    name: "custom-colors-purple",
+    topColor: colors.filter(x => x.name == 'purple')[0].value,
+    horizonColor: colors.filter(x => x.name == 'dark-orange')[0].value,
+    numColors: 12,
+    interpolation: "linear"
+}, 
+{
+    name: "custom-colors-indigo",
+    topColor: colors.filter(x => x.name == 'indigo')[0].value,
+    horizonColor: colors.filter(x => x.name == 'dark-lime')[0].value,
+    numColors: 12,
+    interpolation: "linear"
+}, 
+{
+    name: "custom-colors-cyan",
+    topColor: colors.filter(x => x.name == 'cyan')[0].value,
+    horizonColor: colors.filter(x => x.name == 'dark-pink')[0].value,
+    numColors: 12,
+    interpolation: "linear"
+}, 
 ]
 
 let easings = ["linear", "easeInCubic"];
 
-let getThemeConfig = (name: string, color: string, easing: string) => {
+let getThemeConfig = (name: string, horizonColor: string, topColor: string, easing: string) => {
     return {
         name: name + "-" + easing,
-        keyColors: ["#000000", color],
+        keyColors: [topColor, horizonColor],
         numColors: 12,
         interpolation: easing,
     }
 }
 
-for (let color of colors) {
+for (let theme of customThemes) {
     for (let easing of easings) {
-        let config = getThemeConfig(color.name, color.value, easing);
+
+        let config = getThemeConfig(theme.name, theme.horizonColor as any, theme.topColor as any, easing);
         themes[config.name] = ThemeProvider.getTheme(config);
     }
 }

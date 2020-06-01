@@ -42,19 +42,19 @@
         },
         "purple-sky-recreate": {
             "name": "purple-sky-recreate",
-            "height": 256,
-            "width": 256,
-            "frames": 128,
+            "height": 512,
+            "width": 512,
+            "frames": 96,
             "delay": 60,
             "background": {
                 "sky": {
                     "name": "purple sky",
-                    "height": 180,
+                    "height": 360,
                     "speed": 0,
                     "theme":  {
                         "name": null,
-                        "keyColors": ["#000000", "#CC55DD"],
-                        "numColors": 8,
+                        "keyColors":  ["#010014", "#C62A00"],
+                        "numColors": 12,
                         "interpolation": "easeInCubic"
                     },
                     "gradation": {
@@ -64,9 +64,9 @@
                         "stagger": 32
                     },
                     "sun": {
-                        "x": 180,
-                        "y": 180,
-                        "radius": 28,
+                        "x": 360,
+                        "y": 360,
+                        "radius": 48,
                         "color": "#FCECFC"
                     },
                     "stars": {
@@ -85,51 +85,51 @@
                     "color": "#0A0A0A",
                     "v1": {
                         "x": -40,
-                        "y": 180
+                        "y": 360
                     },
                     "v2": {
-                        "x": 40,
-                        "y": 120
+                        "x": 80,
+                        "y": 240
                     },
                     "v3": {
-                        "x": 120,
-                        "y": 180
+                        "x": 240,
+                        "y": 360
                     }
                 },
                 {
                     "color": "#0A0A0A",
                     "v1": {
-                        "x": 200,
-                        "y": 180
+                        "x": 400,
+                        "y": 360
                     },
                     "v2": {
-                        "x": 255,
-                        "y": 150
+                        "x": 512,
+                        "y": 300
                     },
                     "v3": {
-                        "x": 255,
-                        "y": 180
+                        "x": 512,
+                        "y": 360
                     }
                 },
                 {
                     "color": "#0A0A0A",
                     "v1": {
-                        "x": 60,
-                        "y": 180
+                        "x": 120,
+                        "y": 360
                     },
                     "v2": {
-                        "x": 120,
-                        "y": 140
+                        "x": 240,
+                        "y": 280
                     },
                     "v3": {
-                        "x": 180,
-                        "y": 180
+                        "x": 360,
+                        "y": 360
                     }
                 }
             ],
             "effects": {
                 "reflection": {
-                    "top": 180,
+                    "top": 360,
                     "rippleDepth": 3,
                     "rippleMagnitude": 3,
                     "rippleSpeed": 1,

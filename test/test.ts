@@ -11,7 +11,3 @@ for (var i = 0; i < gifConfigs.queue.length; i++) {
     var next = gifConfigs.gifs[gifConfigs.queue[i]];
     p.createGif(next);
 }
-
-// var generator = new GifGenerator(themes);
-// generator.generateGifs(p);
-
